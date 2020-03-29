@@ -1,4 +1,4 @@
-package com.example.gbeat
+package com.example.ytrendd
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
