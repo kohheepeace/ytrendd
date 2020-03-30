@@ -19,7 +19,12 @@ class AllCountryTile extends StatelessWidget {
           },
         ),
         title: Text('${country.name}'),
-        trailing: Text('${country.emoji}'),
+        trailing: Text(
+          '${country.emoji}',
+          style: TextStyle(
+            fontFamily: 'NotoColorEmoji',
+          ),
+        ),
       ),
     );
   }

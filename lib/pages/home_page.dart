@@ -38,8 +38,20 @@ class _HomePageState extends State<HomePage>
           bottom: TabBar(
             isScrollable: true,
             tabs: _sortedSelectedCountries
-                .map((Country country) =>
-                    Tab(text: '${country.emoji} ${country.name}'))
+                .map((Country country) => Tab(
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            '${country.emoji}',
+                            style: TextStyle(
+                              fontFamily: 'NotoColorEmoji',
+                            ),
+                          ),
+                          SizedBox(width: 5.0),
+                          Text('${country.name}'),
+                        ],
+                      ),
+                    ))
                 .toList(),
           ),
         ),

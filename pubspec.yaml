@@ -67,6 +67,9 @@ flutter:
     - family: FiraSans_Black
       fonts:
         - asset: assets/fonts/FiraSans-Black.ttf
+    - family: NotoColorEmoji
+      fonts:
+        - asset: assets/fonts/NotoColorEmoji.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

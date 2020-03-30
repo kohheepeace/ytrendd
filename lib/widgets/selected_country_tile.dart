@@ -23,7 +23,18 @@ class _SelectedCountryTileState extends State<SelectedCountryTile>
               .onSelectCountry(widget.country);
         },
       ),
-      title: Text('${widget.country.emoji} ${widget.country.name}'),
+      title: Row(
+        children: <Widget>[
+          Text(
+            '${widget.country.emoji}',
+            style: TextStyle(
+              fontFamily: 'NotoColorEmoji',
+            ),
+          ),
+          SizedBox(width: 5.0),
+          Text('${widget.country.name}'),
+        ],
+      ),
       trailing: Icon(Icons.menu),
     );
 
