@@ -1,4 +1,4 @@
-package com.example.ytrendd
+package com.ytrendd.app
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

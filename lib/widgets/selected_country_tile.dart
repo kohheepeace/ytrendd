@@ -32,8 +32,6 @@ class _SelectedCountryTileState extends State<SelectedCountryTile>
         return true;
       },
       onAccept: (sourceCountry) {
-        debugPrint('source countryだ。: ${sourceCountry.code}');
-        debugPrint('target countryだ: ${widget.country.code}');
         Provider.of<CountriesProvider>(context, listen: false)
             .moveCountry(sourceCountry, widget.country);
       },
