@@ -67,20 +67,21 @@ class _SelectedCountryTileState extends State<SelectedCountryTile>
       },
     );
 
-    return LongPressDraggable<Country>(
-      data: widget.country,
-      axis: Axis.vertical,
-      maxSimultaneousDrags: 1,
-      child: dragTarget,
-      childWhenDragging: Container(),
-      feedback: Material(
-        child: ConstrainedBox(
-          constraints:
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
-          child: tile,
+    return LayoutBuilder(builder: (context, boxConstrations) {
+      return LongPressDraggable<Country>(
+        data: widget.country,
+        axis: Axis.vertical,
+        maxSimultaneousDrags: 1,
+        child: dragTarget,
+        childWhenDragging: Container(),
+        feedback: Material(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: boxConstrations.maxWidth),
+            child: tile,
+          ),
+          elevation: 4.0,
         ),
-        elevation: 4.0,
-      ),
-    );
+      );
+    });
   }
 }

@@ -67,11 +67,17 @@ class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        controller: _scrollController,
-        itemCount: videos.length,
-        itemBuilder: (context, index) {
-          return YoutubeVideoCardMobile(video: videos[index], index: index);
-        });
+    if (videos.length > 0) {
+      return ListView.builder(
+          controller: _scrollController,
+          itemCount: videos.length,
+          itemBuilder: (context, index) {
+            return YoutubeVideoCardMobile(video: videos[index], index: index);
+          });
+    } else {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
   }
 }

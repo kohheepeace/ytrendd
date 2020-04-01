@@ -30,10 +30,7 @@ class _HomePageDesktopState extends State<HomePageDesktop>
           centerTitle: true,
           title: Text(
             'Ytrendd',
-            style: TextStyle(
-                fontFamily: 'FiraSans_Black',
-                fontStyle: FontStyle.italic,
-                fontSize: 26.0),
+            style: TextStyle(fontFamily: 'FiraSans_Black', fontSize: 26.0),
           ),
           bottom: TabBar(
             isScrollable: true,
@@ -104,11 +101,13 @@ class _HomePageDesktopState extends State<HomePageDesktop>
             ],
           ),
         ),
-        body: Container(
-          child: TabBarView(
-            children: _sortedSelectedCountries.map((Country country) {
-              return YoutubeVideoListDesktop(country: country);
-            }).toList(),
+        body: Shortcuts(
+          child: Container(
+            child: TabBarView(
+              children: _sortedSelectedCountries.map((Country country) {
+                return YoutubeVideoListDesktop(country: country);
+              }).toList(),
+            ),
           ),
         ),
       ),
