@@ -1,8 +1,8 @@
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:ytrendd/http_client.dart';
-import 'package:ytrendd/pages/country_settings.dart';
-import 'package:ytrendd/pages/home_page.dart';
+import 'package:ytrendd/pages/country_settings/country_settings_page.dart';
+import 'package:ytrendd/pages/home/home_page.dart';
 import 'package:ytrendd/providers/countries_provider.dart';
 import 'package:provider/provider.dart';
 

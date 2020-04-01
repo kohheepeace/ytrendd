@@ -4,12 +4,13 @@ import 'package:ytrendd/widgets/all_country_tile.dart';
 import 'package:ytrendd/widgets/selected_country_tile.dart';
 import 'package:provider/provider.dart';
 
-class CountrySettingsPage extends StatefulWidget {
+class CountrySettingsPageMobile extends StatefulWidget {
   @override
-  _CountrySettingsPageState createState() => _CountrySettingsPageState();
+  _CountrySettingsPageMobileState createState() =>
+      _CountrySettingsPageMobileState();
 }
 
-class _CountrySettingsPageState extends State<CountrySettingsPage> {
+class _CountrySettingsPageMobileState extends State<CountrySettingsPageMobile> {
   @override
   Widget build(BuildContext context) {
     final headerStyle = Theme.of(context).textTheme.title;

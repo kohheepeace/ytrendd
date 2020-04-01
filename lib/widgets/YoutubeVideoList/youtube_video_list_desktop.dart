@@ -5,26 +5,28 @@ import 'package:ytrendd/http_client.dart';
 import 'package:ytrendd/models/country.dart';
 import 'package:ytrendd/models/youtube_video_data.dart';
 import 'package:ytrendd/models/youtube_videos_response.dart';
+import 'package:ytrendd/widgets/YoutubeVideoCard/youtube_video_card_desktop.dart';
 import 'package:ytrendd/widgets/youtube_card.dart';
 import 'package:ytrendd/.env.dart';
 
-class YoutubeVideosList extends StatefulWidget {
+class YoutubeVideoListDesktop extends StatefulWidget {
   final Country country;
 
-  YoutubeVideosList({Key key, this.country}) : super(key: key);
+  YoutubeVideoListDesktop({Key key, this.country}) : super(key: key);
 
   @override
-  _YoutubeVideosListState createState() => _YoutubeVideosListState();
+  _YoutubeVideoListDesktopState createState() =>
+      _YoutubeVideoListDesktopState();
 }
 
-class _YoutubeVideosListState extends State<YoutubeVideosList> {
+class _YoutubeVideoListDesktopState extends State<YoutubeVideoListDesktop> {
   ScrollController _scrollController = ScrollController();
   List<YoutubeVideoData> videos = List<YoutubeVideoData>();
   String nextPageToken = "";
 
   void fetchYoutubeTrendVideos(Country country) async {
     final String regionCode = country.code;
-    final int maxResults = 50;
+    final int maxResults = 20;
 
     final String url =
         'https://www.googleapis.com/youtube/v3/videos?part=snippet%2Cstatistics&chart=mostPopular&regionCode=$regionCode&pageToken=$nextPageToken&maxResults=$maxResults&key=$youtubeApiKey';
@@ -70,8 +72,9 @@ class _YoutubeVideosListState extends State<YoutubeVideosList> {
     return ListView.builder(
         controller: _scrollController,
         itemCount: videos.length,
+        itemExtent: 138.0,
         itemBuilder: (context, index) {
-          return YoutubeCard(video: videos[index], index: index);
+          return YoutubeVideoCardDesktop(video: videos[index], index: index);
         });
   }
 }

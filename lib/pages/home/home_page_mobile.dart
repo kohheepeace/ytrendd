@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ytrendd/models/country.dart';
 import 'package:ytrendd/providers/countries_provider.dart';
-import 'package:ytrendd/widgets/youtube_videos_list.dart';
+import 'package:ytrendd/widgets/YoutubeVideoList/youtube_video_list_mobile.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomePage extends StatefulWidget {
+class HomePageMobile extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageMobileState createState() => _HomePageMobileState();
 }
 
-class _HomePageState extends State<HomePage>
+class _HomePageMobileState extends State<HomePageMobile>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,8 @@ class _HomePageState extends State<HomePage>
         ),
         body: TabBarView(
           children: _sortedSelectedCountries.map((Country country) {
-            return YoutubeVideosList(key: Key(country.code), country: country);
+            return YoutubeVideoListMobile(
+                key: Key(country.code), country: country);
           }).toList(),
         ),
       ),
