@@ -81,14 +81,12 @@ class _HomePageDesktopState extends State<HomePageDesktop>
           ),
         ),
         drawer: HomeDrawer(),
-        body: Shortcuts(
-          child: Container(
-            child: TabBarView(
-              controller: _tabController,
-              children: _sortedSelectedCountries.map((Country country) {
-                return YoutubeVideoListDesktop(country: country);
-              }).toList(),
-            ),
+        body: Container(
+          child: TabBarView(
+            controller: _tabController,
+            children: _sortedSelectedCountries.map((Country country) {
+              return YoutubeVideoListDesktop(country: country);
+            }).toList(),
           ),
         ),
       ),
