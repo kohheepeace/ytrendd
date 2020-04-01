@@ -23,7 +23,6 @@ class YoutubeVideoCardDesktop extends StatelessWidget {
     var formatter = NumberFormat.compact(locale: 'en');
 
     return Padding(
-      // padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 200.0),
       padding: const EdgeInsets.fromLTRB(200, 20, 200, 10),
       child: InkWell(
         onTap: _launchURL,
@@ -54,7 +53,7 @@ class YoutubeVideoCardDesktop extends StatelessWidget {
                         "${video.snippet.channelTitle} • ${formatter.format(int.parse(video.statistics.viewCount))} views • ${timeago.format(DateTime.parse(video.snippet.publishedAt))}",
                         style: Theme.of(context).textTheme.caption),
                     Container(
-                      padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                       child: Text(
                         '${video.snippet.description}',
                         overflow: TextOverflow.ellipsis,

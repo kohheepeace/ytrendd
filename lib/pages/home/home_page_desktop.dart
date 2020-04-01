@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ytrendd/models/country.dart';
 import 'package:ytrendd/providers/countries_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:ytrendd/widgets/YoutubeVideoList/youtube_video_list_desktop.dart';
+import 'package:ytrendd/widgets/home_drawer.dart';
 
 class HomePageDesktop extends StatefulWidget {
   @override
@@ -12,19 +12,46 @@ class HomePageDesktop extends StatefulWidget {
 
 class _HomePageDesktopState extends State<HomePageDesktop>
     with SingleTickerProviderStateMixin {
+  FocusNode _node = new FocusNode();
+  TabController _tabController;
+
+  void _handleKey(RawKeyEvent key) {
+    if (key.runtimeType.toString() == 'RawKeyDownEvent') {
+      if (key.data.keyLabel == "ArrowRight") {
+        _tabController.index++;
+      }
+
+      if (key.data.keyLabel == "ArrowLeft") {
+        _tabController.index--;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Country> _allCountries =
         Provider.of<CountriesProvider>(context).allCountries;
     final _selectedCountries =
         _allCountries?.where((country) => country.selected)?.toList();
-    if (_selectedCountries == null) return CircularProgressIndicator();
+    if (_selectedCountries == null)
+      return Center(child: CircularProgressIndicator());
+
+    _tabController =
+        TabController(vsync: this, length: _selectedCountries.length);
 
     final _sortedSelectedCountries = _selectedCountries
       ..sort((a, b) => a.order.compareTo(b.order));
 
-    return DefaultTabController(
-      length: _sortedSelectedCountries.length,
+    return RawKeyboardListener(
+      autofocus: true,
+      onKey: _handleKey,
+      focusNode: _node,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -33,6 +60,7 @@ class _HomePageDesktopState extends State<HomePageDesktop>
             style: TextStyle(fontFamily: 'FiraSans_Black', fontSize: 26.0),
           ),
           bottom: TabBar(
+            controller: _tabController,
             isScrollable: true,
             tabs: _sortedSelectedCountries
                 .map((Country country) => Tab(
@@ -52,58 +80,11 @@ class _HomePageDesktopState extends State<HomePageDesktop>
                 .toList(),
           ),
         ),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              Container(
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: SizedBox(
-                        width: 60.0,
-                        height: 60.0,
-                        child: CircleAvatar(
-                          child: Image(
-                              image: AssetImage(
-                                  'assets/logo/ytrendd-512x512.png')),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.flight_takeoff,
-                ),
-                title: Text('Countries Settings'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/country-settings');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.people),
-                title: Text('Support and community'),
-                onTap: () async {
-                  final url = 'https://spectrum.chat/ytrendd';
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  } else {
-                    throw 'Could not launch $url';
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
+        drawer: HomeDrawer(),
         body: Shortcuts(
           child: Container(
             child: TabBarView(
+              controller: _tabController,
               children: _sortedSelectedCountries.map((Country country) {
                 return YoutubeVideoListDesktop(country: country);
               }).toList(),
