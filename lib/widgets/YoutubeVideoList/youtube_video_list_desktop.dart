@@ -68,18 +68,12 @@ class _YoutubeVideoListDesktopState extends State<YoutubeVideoListDesktop> {
 
   @override
   Widget build(BuildContext context) {
-    if (videos.length > 0) {
-      return ListView.builder(
-          controller: _scrollController,
-          itemCount: videos.length,
-          itemExtent: 138.0,
-          itemBuilder: (context, index) {
-            return YoutubeVideoCardDesktop(video: videos[index], index: index);
-          });
-    } else {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+    return ListView.builder(
+        controller: _scrollController,
+        itemCount: videos.length,
+        itemExtent: 138.0,
+        itemBuilder: (context, index) {
+          return YoutubeVideoCardDesktop(video: videos[index], index: index);
+        });
   }
 }

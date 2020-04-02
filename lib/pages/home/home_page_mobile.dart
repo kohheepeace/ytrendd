@@ -11,7 +11,7 @@ class HomePageMobile extends StatefulWidget {
 }
 
 class _HomePageMobileState extends State<HomePageMobile>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     List<Country> _allCountries =
@@ -30,10 +30,7 @@ class _HomePageMobileState extends State<HomePageMobile>
           centerTitle: true,
           title: Text(
             'Ytrendd',
-            style: TextStyle(
-                fontFamily: 'FiraSans_Black',
-                fontStyle: FontStyle.italic,
-                fontSize: 26.0),
+            style: TextStyle(fontFamily: 'FiraSans_Black', fontSize: 26.0),
           ),
           bottom: TabBar(
             isScrollable: true,

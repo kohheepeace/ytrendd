@@ -11,7 +11,7 @@ class HomePageDesktop extends StatefulWidget {
 }
 
 class _HomePageDesktopState extends State<HomePageDesktop>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   FocusNode _node = new FocusNode();
   TabController _tabController;
 

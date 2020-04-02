@@ -49,6 +49,18 @@ class HomeDrawer extends StatelessWidget {
               }
             },
           ),
+          ListTile(
+            leading: Icon(Icons.code),
+            title: Text('Github'),
+            onTap: () async {
+              final url = 'https://github.com/KohheePeace/ytrendd';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
+          ),
         ],
       ),
     );
