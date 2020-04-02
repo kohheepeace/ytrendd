@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ytrendd/models/country.dart';
 import 'package:ytrendd/providers/countries_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +18,11 @@ class _HomePageDesktopState extends State<HomePageDesktop>
 
   void _handleKey(RawKeyEvent key) {
     if (key.runtimeType.toString() == 'RawKeyDownEvent') {
-      if (key.data.keyLabel == "ArrowRight") {
+      if (key.logicalKey == LogicalKeyboardKey.arrowRight) {
         _tabController.index++;
       }
 
-      if (key.data.keyLabel == "ArrowLeft") {
+      if (key.logicalKey == LogicalKeyboardKey.arrowLeft) {
         _tabController.index--;
       }
     }
