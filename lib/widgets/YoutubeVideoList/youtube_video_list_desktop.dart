@@ -56,6 +56,7 @@ class _YoutubeVideoListDesktopState extends State<YoutubeVideoListDesktop> {
   Widget build(BuildContext context) {
     if (videos.length > 0) {
       return CustomScrollView(
+        key: PageStorageKey<String>(widget.country.code),
         slivers: <Widget>[
           SliverOverlapInjector(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
