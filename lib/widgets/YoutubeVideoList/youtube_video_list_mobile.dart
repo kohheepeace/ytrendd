@@ -18,7 +18,6 @@ class YoutubeVideoListMobile extends StatefulWidget {
 }
 
 class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile> {
-  ScrollController _scrollController = ScrollController();
   List<YoutubeVideoData> videos = List<YoutubeVideoData>();
   String nextPageToken = "";
 
@@ -46,22 +45,20 @@ class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile> {
     }
   }
 
+  // Todo
+  // @override
+  // bool get wantKeepAlive {
+  //   return false;
+  // }
+
   @override
   void initState() {
     fetchYoutubeTrendVideos(widget.country);
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        if (nextPageToken == null) return;
-        fetchYoutubeTrendVideos(widget.country);
-      }
-    });
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -69,10 +66,15 @@ class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile> {
   Widget build(BuildContext context) {
     if (videos.length > 0) {
       return ListView.builder(
-          controller: _scrollController,
-          itemCount: videos.length,
+          padding: EdgeInsets.only(top: 0),
+          itemCount: videos.length + 1,
           itemBuilder: (context, index) {
-            return YoutubeVideoCardMobile(video: videos[index], index: index);
+            if (index < videos.length) {
+              return YoutubeVideoCardMobile(video: videos[index], index: index);
+            } else {
+              fetchYoutubeTrendVideos(widget.country);
+              return null;
+            }
           });
     } else {
       return Center(

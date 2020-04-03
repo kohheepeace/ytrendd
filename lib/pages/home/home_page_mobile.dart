@@ -12,6 +12,20 @@ class HomePageMobile extends StatefulWidget {
 
 class _HomePageMobileState extends State<HomePageMobile>
     with TickerProviderStateMixin {
+  ScrollController _scrollViewController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollViewController = new ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollViewController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Country> _allCountries =
@@ -23,41 +37,53 @@ class _HomePageMobileState extends State<HomePageMobile>
     final _sortedSelectedCountries = _selectedCountries
       ..sort((a, b) => a.order.compareTo(b.order));
 
-    return DefaultTabController(
-      length: _sortedSelectedCountries.length,
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            'Ytrendd',
-            style: TextStyle(fontFamily: 'FiraSans_Black', fontSize: 26.0),
-          ),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: _sortedSelectedCountries
-                .map((Country country) => Tab(
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            '${country.emoji}',
-                            style: TextStyle(
-                              fontFamily: 'NotoColorEmoji',
+    return Scaffold(
+      drawer: HomeDrawer(),
+      body: DefaultTabController(
+        length: _sortedSelectedCountries.length,
+        child: NestedScrollView(
+          controller: _scrollViewController,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                centerTitle: true,
+                title: Text(
+                  'Ytrendd',
+                  style:
+                      TextStyle(fontFamily: 'FiraSans_Black', fontSize: 26.0),
+                ),
+                pinned: true,
+                floating: true,
+                snap: true,
+                forceElevated: innerBoxIsScrolled,
+                bottom: TabBar(
+                  isScrollable: true,
+                  tabs: _sortedSelectedCountries
+                      .map((Country country) => Tab(
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  '${country.emoji}',
+                                  style: TextStyle(
+                                    fontFamily: 'NotoColorEmoji',
+                                  ),
+                                ),
+                                SizedBox(width: 5.0),
+                                Text('${country.name}'),
+                              ],
                             ),
-                          ),
-                          SizedBox(width: 5.0),
-                          Text('${country.name}'),
-                        ],
-                      ),
-                    ))
-                .toList(),
+                          ))
+                      .toList(),
+                ),
+              ),
+            ];
+          },
+          body: TabBarView(
+            children: _sortedSelectedCountries.map((Country country) {
+              return YoutubeVideoListMobile(
+                  key: Key(country.code), country: country);
+            }).toList(),
           ),
-        ),
-        drawer: HomeDrawer(),
-        body: TabBarView(
-          children: _sortedSelectedCountries.map((Country country) {
-            return YoutubeVideoListMobile(
-                key: Key(country.code), country: country);
-          }).toList(),
         ),
       ),
     );
