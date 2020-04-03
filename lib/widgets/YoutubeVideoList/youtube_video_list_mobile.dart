@@ -65,17 +65,27 @@ class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile> {
   @override
   Widget build(BuildContext context) {
     if (videos.length > 0) {
-      return ListView.builder(
-          padding: EdgeInsets.only(top: 0),
-          itemCount: videos.length + 1,
-          itemBuilder: (context, index) {
-            if (index < videos.length) {
-              return YoutubeVideoCardMobile(video: videos[index], index: index);
-            } else {
-              fetchYoutubeTrendVideos(widget.country);
-              return null;
-            }
-          });
+      return CustomScrollView(
+        slivers: <Widget>[
+          SliverOverlapInjector(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                if (index < videos.length) {
+                  return YoutubeVideoCardMobile(
+                      video: videos[index], index: index);
+                } else {
+                  fetchYoutubeTrendVideos(widget.country);
+                  return null;
+                }
+              },
+              childCount: videos.length + 1,
+            ),
+          ),
+        ],
+      );
     } else {
       return Center(
         child: CircularProgressIndicator(),

@@ -60,36 +60,43 @@ class _HomePageDesktopState extends State<HomePageDesktop>
           controller: _scrollViewController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              SliverAppBar(
-                centerTitle: true,
-                title: Text(
-                  'Ytrendd',
-                  style:
-                      TextStyle(fontFamily: 'FiraSans_Black', fontSize: 26.0),
-                ),
-                pinned: true,
-                floating: true,
-                snap: true,
-                forceElevated: innerBoxIsScrolled,
-                bottom: TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  tabs: _sortedSelectedCountries
-                      .map((Country country) => Tab(
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  '${country.emoji}',
-                                  style: TextStyle(
-                                    fontFamily: 'NotoColorEmoji',
-                                  ),
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverSafeArea(
+                  top: false,
+                  sliver: SliverAppBar(
+                    centerTitle: true,
+                    title: Text(
+                      'Ytrendd',
+                      style: TextStyle(
+                          fontFamily: 'FiraSans_Black', fontSize: 26.0),
+                    ),
+                    pinned: true,
+                    floating: true,
+                    snap: true,
+                    forceElevated: innerBoxIsScrolled,
+                    bottom: TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      tabs: _sortedSelectedCountries
+                          .map((Country country) => Tab(
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      '${country.emoji}',
+                                      style: TextStyle(
+                                        fontFamily: 'NotoColorEmoji',
+                                      ),
+                                    ),
+                                    SizedBox(width: 5.0),
+                                    Text('${country.name}'),
+                                  ],
                                 ),
-                                SizedBox(width: 5.0),
-                                Text('${country.name}'),
-                              ],
-                            ),
-                          ))
-                      .toList(),
+                              ))
+                          .toList(),
+                    ),
+                  ),
                 ),
               ),
             ];
@@ -98,7 +105,12 @@ class _HomePageDesktopState extends State<HomePageDesktop>
             child: TabBarView(
               controller: _tabController,
               children: _sortedSelectedCountries.map((Country country) {
-                return YoutubeVideoListDesktop(country: country);
+                return SafeArea(
+                    top: false,
+                    bottom: false,
+                    child: Builder(builder: (BuildContext context) {
+                      return YoutubeVideoListDesktop(country: country);
+                    }));
               }).toList(),
             ),
           ),
