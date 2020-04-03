@@ -15,6 +15,7 @@ class _HomePageDesktopState extends State<HomePageDesktop>
     with TickerProviderStateMixin {
   FocusNode _node = new FocusNode();
   TabController _tabController;
+  ScrollController _scrollViewController;
 
   void _handleKey(RawKeyEvent key) {
     if (key.runtimeType.toString() == 'RawKeyDownEvent') {
@@ -54,40 +55,52 @@ class _HomePageDesktopState extends State<HomePageDesktop>
       onKey: _handleKey,
       focusNode: _node,
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            'Ytrendd',
-            style: TextStyle(fontFamily: 'FiraSans_Black', fontSize: 26.0),
-          ),
-          bottom: TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            tabs: _sortedSelectedCountries
-                .map((Country country) => Tab(
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            '${country.emoji}',
-                            style: TextStyle(
-                              fontFamily: 'NotoColorEmoji',
-                            ),
-                          ),
-                          SizedBox(width: 5.0),
-                          Text('${country.name}'),
-                        ],
-                      ),
-                    ))
-                .toList(),
-          ),
-        ),
         drawer: HomeDrawer(),
-        body: Container(
-          child: TabBarView(
-            controller: _tabController,
-            children: _sortedSelectedCountries.map((Country country) {
-              return YoutubeVideoListDesktop(country: country);
-            }).toList(),
+        body: NestedScrollView(
+          controller: _scrollViewController,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                centerTitle: true,
+                title: Text(
+                  'Ytrendd',
+                  style:
+                      TextStyle(fontFamily: 'FiraSans_Black', fontSize: 26.0),
+                ),
+                pinned: true,
+                floating: true,
+                snap: true,
+                forceElevated: innerBoxIsScrolled,
+                bottom: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  tabs: _sortedSelectedCountries
+                      .map((Country country) => Tab(
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  '${country.emoji}',
+                                  style: TextStyle(
+                                    fontFamily: 'NotoColorEmoji',
+                                  ),
+                                ),
+                                SizedBox(width: 5.0),
+                                Text('${country.name}'),
+                              ],
+                            ),
+                          ))
+                      .toList(),
+                ),
+              ),
+            ];
+          },
+          body: Container(
+            child: TabBarView(
+              controller: _tabController,
+              children: _sortedSelectedCountries.map((Country country) {
+                return YoutubeVideoListDesktop(country: country);
+              }).toList(),
+            ),
           ),
         ),
       ),

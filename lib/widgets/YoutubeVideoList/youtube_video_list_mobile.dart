@@ -23,7 +23,7 @@ class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile> {
 
   void fetchYoutubeTrendVideos(Country country) async {
     final String regionCode = country.code;
-    final int maxResults = 20;
+    final int maxResults = 25;
 
     final String url =
         'https://www.googleapis.com/youtube/v3/videos?part=snippet%2Cstatistics&chart=mostPopular&regionCode=$regionCode&pageToken=$nextPageToken&maxResults=$maxResults&key=$youtubeApiKey';

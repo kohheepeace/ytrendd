@@ -19,13 +19,12 @@ class YoutubeVideoListDesktop extends StatefulWidget {
 }
 
 class _YoutubeVideoListDesktopState extends State<YoutubeVideoListDesktop> {
-  ScrollController _scrollController = ScrollController();
   List<YoutubeVideoData> videos = List<YoutubeVideoData>();
   String nextPageToken = "";
 
   void fetchYoutubeTrendVideos(Country country) async {
     final String regionCode = country.code;
-    final int maxResults = 20;
+    final int maxResults = 25;
 
     final String url =
         'https://www.googleapis.com/youtube/v3/videos?part=snippet%2Cstatistics&chart=mostPopular&regionCode=$regionCode&pageToken=$nextPageToken&maxResults=$maxResults&key=$youtubeApiKey';
@@ -51,30 +50,22 @@ class _YoutubeVideoListDesktopState extends State<YoutubeVideoListDesktop> {
   void initState() {
     fetchYoutubeTrendVideos(widget.country);
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        if (nextPageToken == null) return;
-        fetchYoutubeTrendVideos(widget.country);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     if (videos.length > 0) {
       return ListView.builder(
-          controller: _scrollController,
-          itemCount: videos.length,
+          itemCount: videos.length + 1,
           itemExtent: 138.0,
           itemBuilder: (context, index) {
-            return YoutubeVideoCardDesktop(video: videos[index], index: index);
+            if (index < videos.length) {
+              return YoutubeVideoCardDesktop(
+                  video: videos[index], index: index);
+            } else {
+              fetchYoutubeTrendVideos(widget.country);
+              return null;
+            }
           });
     } else {
       return Center(
