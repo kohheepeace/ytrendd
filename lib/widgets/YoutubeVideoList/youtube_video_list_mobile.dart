@@ -7,6 +7,7 @@ import 'package:ytrendd/models/youtube_video_data.dart';
 import 'package:ytrendd/models/youtube_videos_response.dart';
 import 'package:ytrendd/.env.dart';
 import 'package:ytrendd/widgets/YoutubeVideoCard/youtube_video_card_mobile.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class YoutubeVideoListMobile extends StatefulWidget {
   final Country country;
@@ -17,9 +18,13 @@ class YoutubeVideoListMobile extends StatefulWidget {
   _YoutubeVideoListMobileState createState() => _YoutubeVideoListMobileState();
 }
 
-class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile> {
+class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile>
+    with AutomaticKeepAliveClientMixin {
+  bool _keepAlive = true;
   List<YoutubeVideoData> videos = List<YoutubeVideoData>();
   String nextPageToken = "";
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   void fetchYoutubeTrendVideos(Country country) async {
     final String regionCode = country.code;
@@ -45,11 +50,26 @@ class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile> {
     }
   }
 
-  // Todo
-  // @override
-  // bool get wantKeepAlive {
-  //   return false;
-  // }
+  void _onRefresh(Country country) async {
+    setState(() {
+      _keepAlive = false;
+    });
+
+    updateKeepAlive();
+
+    fetchYoutubeTrendVideos(country);
+
+    setState(() {
+      _keepAlive = true;
+    });
+
+    updateKeepAlive();
+
+    _refreshController.refreshCompleted();
+  }
+
+  @override
+  bool get wantKeepAlive => _keepAlive;
 
   @override
   void initState() {
@@ -64,28 +84,35 @@ class _YoutubeVideoListMobileState extends State<YoutubeVideoListMobile> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (videos.length > 0) {
-      return CustomScrollView(
-        key: PageStorageKey<String>(widget.country.code),
-        slivers: <Widget>[
-          SliverOverlapInjector(
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                if (index < videos.length) {
-                  return YoutubeVideoCardMobile(
-                      video: videos[index], index: index);
-                } else {
-                  fetchYoutubeTrendVideos(widget.country);
-                  return null;
-                }
-              },
-              childCount: videos.length + 1,
+      return SmartRefresher(
+        enablePullDown: true,
+        controller: _refreshController,
+        onRefresh: () => _onRefresh(widget.country),
+        header: WaterDropMaterialHeader(),
+        child: CustomScrollView(
+          key: PageStorageKey<String>(widget.country.code),
+          slivers: <Widget>[
+            SliverOverlapInjector(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
             ),
-          ),
-        ],
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  if (index < videos.length) {
+                    return YoutubeVideoCardMobile(
+                        video: videos[index], index: index);
+                  } else {
+                    fetchYoutubeTrendVideos(widget.country);
+                    return null;
+                  }
+                },
+                childCount: videos.length + 1,
+              ),
+            ),
+          ],
+        ),
       );
     } else {
       return Center(

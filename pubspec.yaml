@@ -32,6 +32,7 @@ dependencies:
   timeago: ^2.0.26
   intl: ^0.16.1
   responsive_builder: ^0.1.5
+  pull_to_refresh: ^1.5.7
 
 dev_dependencies:
   flutter_test:
