@@ -18,7 +18,8 @@ class YoutubeVideoListDesktop extends StatefulWidget {
       _YoutubeVideoListDesktopState();
 }
 
-class _YoutubeVideoListDesktopState extends State<YoutubeVideoListDesktop> {
+class _YoutubeVideoListDesktopState extends State<YoutubeVideoListDesktop>
+    with AutomaticKeepAliveClientMixin {
   List<YoutubeVideoData> videos = List<YoutubeVideoData>();
   String nextPageToken = "";
 
@@ -51,6 +52,9 @@ class _YoutubeVideoListDesktopState extends State<YoutubeVideoListDesktop> {
     fetchYoutubeTrendVideos(widget.country);
     super.initState();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
