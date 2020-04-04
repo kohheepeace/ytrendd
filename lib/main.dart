@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
             create: (context) => CountriesProvider()..fetchAllCountries()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Ytrendd',
         theme: ThemeData(
           primarySwatch: Colors.red,
         ),
